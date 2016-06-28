@@ -24,13 +24,16 @@ trait_by_dataset <- unique_species_id_list %>%
   map(~ left_join(., full$traits))
 
 trait_matrix_by_dataset <- trait_by_dataset %>% 
-  map(~ select(., species_id, matches("^[A-Z]{2}\\d"))) %>% 
+  map(~ select(., species_id, matches("^[A-Z]{2}\\d"))) %>%
+  map(~ `rownames<-`(.x, .x$species_id)) %>% 
+  map(~ select(.x, -species_id)) %>% 
   map(~ as.matrix(.))
 
+  
 abundance_matrix_by_dataset <- abundance_dataset_list %>% 
   map(~ select(., -dataset_id, -bwg_name)) %>% 
   map(~ spread(., brm, abd)) %>% 
+  map(~ `rownames<-`(.x, .x$species_id)) %>% 
+  map(~ select(.x, -species_id)) %>% 
   map(~ as.matrix(.))
-
-trait_matrix_by_dataset[[1]][,1] == abundance_matrix_by_dataset[[1]][,1]
 
