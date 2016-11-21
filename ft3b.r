@@ -6,7 +6,11 @@ library(ade4)
 library(vegan)
 library(gam)
 library(plyr)
-#library(dplyr)
+library(dplyr)
+
+## A is the abundance matrix and T is the trait matrix and dset is the data set
+
+# Fuzzit produces for every bromeliad the traits weighted by the abundance of every species in a plant. 
 
 Fuzzit<-function(A,T,dset)
 {
@@ -37,6 +41,9 @@ return(a.fuz2)
 nset<-length(names(trait_matrix_by_dataset))
 fdat<-NULL
 
+
+### Selecting the abundance and the trait matrix for each data set and using Fuzzit on those matrices 
+
 for(i in 1:nset){ 
   dset<-as.numeric(names(abundance_matrix_by_dataset[i]))
   A<-abundance_matrix_by_dataset[[i]]
@@ -46,8 +53,7 @@ for(i in 1:nset){
 
 }
 
-library(data.table)
-fdat2<-rbindlist(fdat)
+fdat2<-bind_rows(fdat)
 fdat2$dset
 
 ####group dataset into "regions" 
@@ -80,6 +86,13 @@ fdat2$region<-"XX"
 #  mutate(region = ifelse(visit_id %in%c(436),"Sona_900", region))%>% #Sonadora 900
 #  mutate(region = ifelse(visit_id %in%c(441),"Sona_900", region))  #Sonadora 950
   
+
+## we are adding a region based on the country to each of the datasets -> all of them are in a dataframe fdat2
+## SCIENCE NOTE: review region definitions
+
+
+####NOTE!!! DO DATA FRAME DATA SET AND REGIONS AND THEN MERGE, REPLACE CODE BELOW 
+
 ##by data set ID
 fdat2 <- fdat2 %>%
   mutate(region = ifelse(dset %in%c(6),"BR_car_closed", region))%>%   #Cardoso2008	Brazil closed habitat
@@ -120,20 +133,18 @@ fdat2 <- fdat2 %>%
   mutate(region = ifelse(dset %in%c(221),"PR", region))%>%   #ElVerde1996	Puerto Rico
   mutate(region = ifelse(dset %in%c(231),"PR", region))   #Sonadora2004	Puerto Rico
 
-#####I am not good with data.tables yet so I convert back to data.frame
-fdat3<-as.data.frame(fdat2)
 
-
-#BWGdb
+#BWGdb 
+# We need to define groups for the traits. Within each trait there are a x number of groups
 groups<-c(4,5,2,8,6,7,8,4,5,8,3,4)
 names(groups)=c("AS","BS","DM","FD","FG","LO","RE","RF","RM","MD","CP","BF")##noms des traits
 
-reg1<-as.numeric(as.factor(sort(unique(fdat3$region))))
-names(reg1)<-sort(unique(fdat3$region))
+reg1<-as.numeric(as.factor(sort(unique(fdat2$region))))
+names(reg1)<-sort(unique(fdat2$region))
 
 #attention: no all-zero columns/rows, must delete!!
-colSums(fdat3[,3:(dim(fdat3)[2]-1)])==0
-rowSums(fdat3[,3:(dim(fdat3)[2]-1)])==0
+which(colSums(fdat2[,3:(dim(fdat2)[2]-1)])==0)
+which(rowSums(fdat2[,3:(dim(fdat2)[2]-1)])==0) 
 
 postscript("plot.ft3.ps",horizontal=TRUE)
 par(mfrow=c(1,1),omi=c(1,1,1,1),mar=c(5,6,3,1)*.5,las=1)
@@ -142,14 +153,14 @@ library(RColorBrewer)
 mycol=c("#A6CEE3","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#B2DF8A","#33A02C","#FB9A99","#E31A1C","#E31A1C","#E31A1C","#E31A1C","#FDBF6F","#FF7F00","#CAB2D6")
 
 #Fuzzy Principal Correspondence analysis (FPCA)
-data_fpca <- prep.fuzzy.var (fdat3[,3:(dim(fdat3)[2]-1)], groups) #code trait modalities 
+data_fpca <- prep.fuzzy.var(fdat2[,3:(dim(fdat2)[2]-1)], groups) #code trait modalities 
 res_fpca <- dudi.fpca(data_fpca, scannf = FALSE, nf = 2)
 #FPCA plots
 #scatter(res_fpca)#samples and traits
 #s.arrow(res_fpca$l1)#samples
 s.arrow(res_fpca$c1)#traits
 summary(res_fpca)#Eigenvalues, projected inertia (by axis and cumulated)
-s.class(res_fpca$li,as.factor(fdat3$region),cpoint=0,cstar=0,axesell=TRUE,col=mycol)	#show clusters by region
+s.class(res_fpca$li,as.factor(fdat2$region),cpoint=0,cstar=0,axesell=TRUE,col=mycol)	#show clusters by region
 ##legend("bottomleft", pch=16, col=brewer.pal(17,"Spectral"), legend=unique(as.factor(fdat3$region)))
 
 dev.off()
