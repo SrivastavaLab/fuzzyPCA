@@ -1,0 +1,26 @@
+
+##currently not done by visit ID
+#fdat2 <- fdat2 %>%
+#  mutate(region = ifelse(visit_id %in%c(141,361,156,171),"PR_df", region))%>% # dwarf forest
+#  mutate(region = ifelse(visit_id %in%c(151,166,356,181,136),"PR_pc", region))%>% # Palo colorado
+#  mutate(region = ifelse(visit_id %in%c(146,161,351,176,131),"PR_t", region))%>% # tabunocco
+#  mutate(region = ifelse(visit_id %in%c(451),"SABA_dry", region))%>% #Saba dry forest
+#  mutate(region = ifelse(visit_id %in%c(121),"SABA_montange", region))%>% #Saba Montagne
+#  mutate(region = ifelse(visit_id %in%c(126),"SABA_cloud", region))%>% #Saba cloud forest
+#  mutate(region = ifelse(visit_id %in%c(116),"SABA_montange", region))%>% #Saba SC montagne
+#  mutate(region = ifelse(visit_id %in%c(201),"DOM_cloud", region))%>% #Dominica cloud forest
+#  mutate(region = ifelse(visit_id %in%c(196),"DOM_montange", region))%>% #Dominica montagne thicket
+#  mutate(region = ifelse(visit_id %in%c(191),"DOM_subtropical", region))%>% #Dominica subtropical
+#  mutate(region = ifelse(visit_id %in%c(446),"Sona_1000", region))%>% #Sonadora 1000
+#  mutate(region = ifelse(visit_id %in%c(376),"Sona_400", region))%>% #Sonadora 400
+#  mutate(region = ifelse(visit_id %in%c(391),"Sona_400", region))%>% #Sonadora 450
+#  mutate(region = ifelse(visit_id %in%c(396),"Sona_500", region))%>% #Sonadora 500
+#  mutate(region = ifelse(visit_id %in%c(401),"Sona_500", region))%>% #Sonadora 550
+#  mutate(region = ifelse(visit_id %in%c(506),"Sona_600", region))%>% #Sonadora 600
+#  mutate(region = ifelse(visit_id %in%c(411),"Sona_600", region))%>% #Sonadora 650
+#  mutate(region = ifelse(visit_id %in%c(416),"Sona_700", region))%>% #Sonadora 700
+#  mutate(region = ifelse(visit_id %in%c(421),"Sona_700", region))%>% #Sonadora 750
+#  mutate(region = ifelse(visit_id %in%c(426),"Sona_800", region))%>% #Sonadora 800
+#  mutate(region = ifelse(visit_id %in%c(431),"Sona_800", region))%>% #Sonadora 850 
+#  mutate(region = ifelse(visit_id %in%c(436),"Sona_900", region))%>% #Sonadora 900
+#  mutate(region = ifelse(visit_id %in%c(441),"Sona_900", region))  #Sonadora 950
