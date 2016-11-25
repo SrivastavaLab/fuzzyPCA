@@ -11,6 +11,8 @@ library(RColorBrewer)
 
 source('functions.R')
 
+trait_matrix_by_dataset <- readRDS("Data/trait_matrix_by_dataset.rds")
+abundance_matrix_by_dataset <- saveRDS("Data/abundance_matrix_by_dataset")
 
 #produces trait_matrix_by_dataset and abundance_matrix_by_dataset
 #test: names(trait_matrix_by_dataset)==names(trait_matrix_by_dataset)
@@ -44,7 +46,7 @@ fdat2$dset
 ## SCIENCE NOTE: review region definitions
 
 ##Add region by dataset ID 
-regions <- read.csv('Regions.csv', header = TRUE)
+regions <- read.csv('Data/Regions.csv', header = TRUE)
 fdat2 <- left_join(fdat2,regions) %>% select(-dataset)
 
 
@@ -60,7 +62,7 @@ names(reg1)<-sort(unique(fdat2$region))
 which(colSums(fdat2[,3:(dim(fdat2)[2]-1)])==0)
 which(rowSums(fdat2[,3:(dim(fdat2)[2]-1)])==0) 
 
-postscript("plot.ft3.ps",horizontal=TRUE)
+postscript("Figures/Ordination.ps",horizontal=TRUE)
 par(mfrow=c(1,1),omi=c(1,1,1,1),mar=c(5,6,3,1)*.5,las=1)
 
 #display.brewer.pal(9,"Paired")  #start with this and repeat for county but not within country
@@ -79,5 +81,5 @@ s.class(res_fpca$li,as.factor(fdat2$region),cpoint=0,cstar=0,axesell=TRUE,col=my
 
 dev.off()
   
-saveRDS(res_fpca, "PCA_results.rds")
-write.csv(fdat2, 'Abundance_weighted_traits.csv', row.names = FALSE)
+saveRDS(res_fpca, "Data/PCA_results.rds")
+write.csv(fdat2, 'Data/Abundance_weighted_traits.csv', row.names = FALSE)

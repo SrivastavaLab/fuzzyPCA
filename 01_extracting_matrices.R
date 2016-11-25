@@ -35,7 +35,6 @@ trait_matrix_by_dataset <- trait_by_dataset %>%
   map(~ select(.x, -species_id)) %>% 
   map(~ as.matrix(.))
 
-  
 abundance_matrix_by_dataset <- abundance_dataset_list %>% 
   map(~ select(., -dataset_id, -bwg_name)) %>% 
   map(~ spread(., brm, abd)) %>% 
@@ -43,4 +42,6 @@ abundance_matrix_by_dataset <- abundance_dataset_list %>%
   map(~ select(.x, -species_id)) %>% 
   map(~ as.matrix(.))
 
+saveRDS(trait_matrix_by_dataset, "Data/trait_matrix_by_dataset.rds")
+saveRDS(abundance_matrix_by_dataset, "Data/abundance_matrix_by_dataset")
 
