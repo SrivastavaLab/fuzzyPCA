@@ -1,8 +1,8 @@
 library(NbClust)
 library(RColorBrewer)
 
-res_fpca <- readRDS('PCA_results.rds')
-fdat2 <- read.csv('Abundance_weighted_traits.csv')
+res_fpca <- readRDS('Data/PCA_results.rds')
+fdat2 <- read.csv('Data/Abundance_weighted_traits.csv')
 
 ################################################################################
 #cluster analysis

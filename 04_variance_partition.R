@@ -13,4 +13,4 @@ residuals(vare.proc)
 protest(res_fpca$li,as.numeric(as.factor(fdat2$region)), scores = "sites", permutations = how(nperm = 999))
 
 
-
+## How is the clustering related into region
