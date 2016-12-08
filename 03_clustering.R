@@ -43,19 +43,6 @@ legend(min(newdf$Axis1),min(newdf$Axis1),inset=c(-0.25,0),fill=mycol2,legend=new
 
 dev.off()
 
-#res.t<-NbClust(res_fpca$c1, distance = "euclidean", min.nc=2, max.nc=10, method = "ward.D", index = "all")
-#res.t$All.index
-#res.t$Best.nc
-#res.t$All.CriticalValues
-#res.t$Best.partition
-
-#newdf.t<-data.frame(res_fpca$c1,res.t$Best.partition)
-#names(newdf.t)<-c("CS1","CS2","clust")
-#mycol2<-brewer.pal(5,"Paired")
-#s.class(res_fpca$c1,as.factor(res.t$Best.partition),cpoint=0,cstar=0,axesell=TRUE,col=mycol2)	
-#points(newdf.t$CS1,newdf.t$CS2,pch=1)
-#text(newdf.t$CS1,newdf.t$CS2,labels=rownames(newdf.t), cex= 0.7, pos=3)
-
 
 
 ###### Coordinates of the traits clustered
