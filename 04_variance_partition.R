@@ -1,5 +1,8 @@
 library(vegan)
 library(dplyr)
+library(purrr)
+library(tidyr)
+library(tibble)
 
 res_fpca <- readRDS('Data/PCA_results.rds')
 fdat2 <- read.csv('Data/Abundance_weighted_traits.csv')
@@ -20,18 +23,82 @@ protest(res_fpca$li,as.numeric(as.factor(fdat2$region)), scores = "sites", permu
 ## Turnover accross traits
 
 betadiver_all <- fdat2 %>% select(-region) %>% betadiver()
+png("Figures/BetaDiv/BetaAll.png")
 plot(betadiver_all)
+dev.off()
 
 reg_num_j <- fdat2 %>% select(region) %>% unique() %>% mutate(reg_num = c(14, 5, 6, 4, 3, 2 , 1, 11, 15, 12, 10, 13, 16, 7, 8, 9, 6))
 
 nested_sorted <- left_join(fdat2, reg_num_j) %>% arrange(reg_num) %>% select(-region, -reg_num) %>% nestednodf()
+png("Figures/BetaDiv/NestedAll.png")
 plot(nested_sorted)
+dev.off()
 
 part_beta_all <- fdat2 %>% select(-region) %>% nestedbetajac()
 part_beta_all
 
+
+##  Trait turnover based on region 
+
+fdat_region <- split(fdat2, fdat2$region) %>% 
+  map(~ select(.x, -region))
+
+betadiver_region <- fdat_region %>% 
+  map(~ betadiver(.x)) 
+
+for(i in 1:length(betadiver_region)){
+  tit <- betadiver_region[i] %>% names()
+  png(paste0('Figures/BetaDiv/',tit, 'betadiv.png'))
+  plot(betadiver_region[[i]], main = tit)
+  dev.off()
+}
+
+for(i in 1:length(betadiver_region)){
+  region_name <-betadiver_region[i] %>% names()
+  nested <- fdat2 %>% filter(region == region_name) %>% select(-region) %>% nestednodf()
+  png(paste0('Figures/BetaDiv/',region_name, 'nested.png'))
+  plot(nested)
+  dev.off()
+}
+
+beta_part <- list()
+
+for(i in 1:length(betadiver_region)){
+  region_name <-betadiver_region[i] %>% names()
+  part <- fdat2 %>% filter(region == region_name) %>% select(-region) %>% nestedbetajac()
+  beta_part[[i]] <- data.frame(region_name, part)
+}
+
+Beta_part_table <- beta_part %>% 
+  map(~ rownames_to_column(.x)) %>% 
+  map(~ spread(.x, key = rowname, value = part)) %>% 
+  bind_rows() %>% 
+  arrange(jaccard)
+
+## Beta disper
+betadisper_fdat <- betadisper(dist(fdat2 %>% select(-region)), fdat2$region, type = 'centroid')
+permutest(betadisper_fdat, pairwise = TRUE, permutations = 99)
+
+anova(betadisper_fdat)
+
+(mod.HSD <- TukeyHSD(betadisper_fdat))
+plot(mod.HSD)
+
+plot(betadisper_fdat, ellipse = TRUE, hull = TRUE, conf = 0.9)
+jpeg('Figures/BetaDiv/BetaDisper.jpeg')
+boxplot(betadisper_fdat)
+dev.off()
+
+
+
+
+
+
+
+
+
+
 ## Turnover across species
-library(purrr)
 
 abundance <- abundance_matrix_by_dataset %>% 
   map(~ as.data.frame(.x)) %>% bind_rows(.id = 'dset')
