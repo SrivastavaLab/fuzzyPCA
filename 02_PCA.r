@@ -12,7 +12,7 @@ library(RColorBrewer)
 source('functions.R')
 
 trait_matrix_by_dataset <- readRDS("Data/trait_matrix_by_dataset.rds")
-abundance_matrix_by_dataset <- saveRDS("Data/abundance_matrix_by_dataset")
+abundance_matrix_by_dataset <- readRDS("Data/abundance_matrix_by_dataset.rds")
 
 #produces trait_matrix_by_dataset and abundance_matrix_by_dataset
 #test: names(trait_matrix_by_dataset)==names(trait_matrix_by_dataset)

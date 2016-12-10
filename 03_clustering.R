@@ -64,3 +64,6 @@ points(newdf.t$CS1,newdf.t$CS2,pch=1)
 text(newdf.t$CS1,newdf.t$CS2,labels=rownames(newdf.t), cex= 0.7, pos=3)
 
 dev.off()
+
+saveRDS(res, "Data/clustering_broms.rds")
+saveRDS(res.t, "Data/clustering_traits.rds")

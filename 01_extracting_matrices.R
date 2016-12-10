@@ -43,5 +43,5 @@ abundance_matrix_by_dataset <- abundance_dataset_list %>%
   map(~ as.matrix(.))
 
 saveRDS(trait_matrix_by_dataset, "Data/trait_matrix_by_dataset.rds")
-saveRDS(abundance_matrix_by_dataset, "Data/abundance_matrix_by_dataset")
+saveRDS(abundance_matrix_by_dataset, "Data/abundance_matrix_by_dataset.rds")
 

@@ -5,6 +5,7 @@ library(tidyr)
 library(tibble)
 
 res_fpca <- readRDS('Data/PCA_results.rds')
+
 fdat2 <- read.csv('Data/Abundance_weighted_traits.csv')
 
 
@@ -84,7 +85,9 @@ anova(betadisper_fdat)
 (mod.HSD <- TukeyHSD(betadisper_fdat))
 plot(mod.HSD)
 
-plot(betadisper_fdat, ellipse = TRUE, hull = TRUE, conf = 0.9)
+
+## Change plot axis <- not working 
+plot(betadisper_fdat, axes = c(3, 2), ellipe = TRUE)
 jpeg('Figures/BetaDiv/BetaDisper.jpeg')
 boxplot(betadisper_fdat)
 dev.off()
